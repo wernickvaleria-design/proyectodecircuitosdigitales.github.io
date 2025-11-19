@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circuitos Digitales - Juego Educativo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            transition: background 0.5s ease;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+      .bg-pink { background: url('foto1.JPG') center/cover no-repeat fixed; }
+        .bg-yellow { background: url('foto2.JPG') center/cover no-repeat fixed; }
+        .bg-green { background: url('foto3.JPG') center/cover no-repeat fixed; }
+        .bg-blue { background: url('foto4.JPG') center/cover no-repeat fixed; }
+        .bg-purple { background: url('foto5.JPG') center/cover no-repeat fixed; }
+        .bg-peach { background: url('foto6.JPG') center/cover no-repeat fixed; }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(245, 153, 210, 0.084);
+            position: relative;
+        }
+
+        .screen {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            text-align: center;
+            color: #fc99d4;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #fc99d4;
+            font-size: 2em;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #fc99d4 0%, #FF6B9D 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            display: block;
+            margin: 20px auto;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(233, 30, 140, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(233, 30, 140, 0.4);
+        }
+
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .topic-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 3px solid transparent;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            border-color: #fc99d4;
+            box-shadow: 0 10px 25px rgba(233, 30, 140, 0.2);
+        }
+
+        .gate-symbol {
+            font-size: 3em;
+            margin: 10px 0;
+            font-weight: bold;
+            color: #fc99d4;
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 25px;
+            border-radius: 20px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border: 2px solid #FFE5EC;
+        }
+
+        th {
+            background: linear-gradient(135deg, #fc99d4 0%, #FFC2D1 100%);
+            color: white;
+            font-weight: 700;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #fc99d4 0%, #fc99d4 100%);
+            padding: 10px 30px;
+            font-size: 1em;
+            margin: 10px;
+            display: inline-block;
+        }
+
+        .credits {
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            font-size: 0.9em;
+            color: #666;
+            text-align: right;
+        }
+
+        .subtopics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .svg-gate {
+            width: 120px;
+            height: 100px;
+            margin: 15px auto;
+            display: block;
+        }
+
+        p {
+            line-height: 1.8;
+            color: #555;
+            font-size: 1.1em;
+        }
+
+        .formula {
+            background: #FFF9E5;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-weight: 600;
+            text-align: center;
+            font-size: 1.2em;
+            color: #fc99d4;
+        }
+    </style>
+</head>
+<body class="bg-pink">
+    <!-- Pantalla de Inicio -->
+    <div id="home" class="container screen active">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <h1 style="font-size: 3em; color: #fc99d4"> 📱DEMOSTRACIÓN DE CIRCUITOS DIGITALES📱</h1>
+        </div>
+        <button class="btn" onclick="showScreen('menu')">✨ Iniciar Lección ✨</button>
+        <div class="credits">
+            <strong>Proyecto Circuitos Digitales</strong><br>
+            Alumna: Daisy Valeria Wernick Mata
+        </div>
+    </div>
+
+    <!-- Menú Principal -->
+    <div id="menu" class="container screen">
+        <h1>📚 Que quieres aprender hoy? </h1> 
+        <div class="topics-grid">
+            <div class="topic-card" onclick="showScreen('basicas'); changeBackground('yellow')">
+                <div class="gate-symbol">⚡</div>
+                <h3>Compuertas Básicas</h3>
+                <p>AND, OR, NOT</p>
+            </div>
+            <div class="topic-card" onclick="showScreen('compuestas'); changeBackground('green')">
+                <div class="gate-symbol">🌟</div>
+                <h3>Compuertas Compuestas</h3>
+                <p>NAND, NOR, XOR, XNOR</p>
+            </div>
+            <div class="topic-card" onclick="showScreen('codificadores'); changeBackground('blue')">
+                <div class="gate-symbol">🛼</div>
+                <h3>Codificadores/<br>Decodificadores</h3>
+            </div>
+            <div class="topic-card" onclick="showScreen('multiplexores'); changeBackground('purple')">
+                <div class="gate-symbol">🌼</div>
+                <h3>Multiplexores/<br>Demultiplexores</h3>
+            </div>
+            <div class="topic-card" onclick="showScreen('comparadores'); changeBackground('peach')">
+                <div class="gate-symbol">🫐</div>
+                <h3>Comparadores</h3>
+            </div>
+            <div class="topic-card" onclick="showScreen('sumadores'); changeBackground('pink')">
+                <div class="gate-symbol">🪸</div>
+                <h3>Sumadores</h3>
+            </div>
+            <div class="topic-card" onclick="showScreen('display'); changeBackground('yellow')">
+                <div class="gate-symbol">🎧</div>
+                <h3>Display de<br>7 Segmentos</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Compuertas Básicas -->
+    <div id="basicas" class="container screen">
+        <h2>⚡ Compuertas Básicas</h2>
+        <div class="subtopics-grid">
+            <div class="topic-card" onclick="showScreen('and')">
+                <img src="AND.PNG" alt="AND" style="width: 170px; height: 170px; margin-bottom: 10px;">
+                <h3>AND</h3>
+            </div>
+            <div class="topic-card" onclick="showScreen('or')">
+                <img src="OR.PNG" alt="OR" style="width: 170px; height: 170px; margin-bottom: 10px;">
+                <h3>OR</h3>
+            </div>
+            <div class="topic-card" onclick="showScreen('not')">
+                <img src="NOT.PNG" alt="NOT" style="width: 170px; height: 170px; margin-bottom: 10px;">
+                <h3>NOT</h3>
+            </div>
+        </div>
+        <button class="back-btn" onclick="showScreen('menu'); changeBackground('pink')">← Volver</button>
+    </div>
+
+    <!-- AND -->
+    <div id="and" class="container screen">
+        <h2>⊼ Compuerta AND</h2>
+        <div class="info-box">
+            <p><strong>🎯 ¿Qué es la compuerta AND?</strong></p>
+            <p>La compuerta AND produce una salida de 1 solamente cuando todas sus entradas son 1.</p>
+            <div class="formula">Y = A · B</div>
+            <p>💡 Es como una puerta que necesita dos llaves para abrirse.</p>
+        </div>
+        <button class="btn" onclick="showScreen('and-tabla')">Ver Tabla de Verdad →</button>
+        <button class="back-btn" onclick="showScreen('basicas')">← Volver</button>
+    </div>
+
+    <!-- Tabla AND -->
+    <div id="and-tabla" class="container screen">
+        <h2>📊 Tabla de Verdad - AND</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>A</th>
+                    <th>B</th>
+                    <th>X</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>0</td><td>0</td><td>0</td></tr>
+                <tr><td>0</td><td>1</td><td>0</td></tr>
+                <tr><td>1</td><td>0</td><td>0</td></tr>
+                <tr><td>1</td><td>1</td><td>1</td></tr>
+            </tbody>
+        </table>
+        <button class="back-btn" onclick="showScreen('and')">← Volver</button>
+    </div>
+
+    <!-- OR -->
+    <div id="or" class="container screen">
+        <h2>⊽ Compuerta OR</h2>
+        <div class="info-box">
+            <p><strong>🪩 ¿Qué es la compuerta OR?🪩</strong></p>
+            <p>La compuerta OR (O) produce una salida de 1 cuando al menos una de sus entradas es 1.</p>
+            <div class="formula">Y = A + B</div>
+            <p>La compuerta OR son como dos interruptores para una misma luz y si un interruptor esta encendido entonces la luz encenderá.</p>
+        </div>
+        <button class="btn" onclick="showScreen('or-tabla')">Ver Tabla de Verdad →</button>
+        <button class="back-btn" onclick="showScreen('basicas')">← Volver</button>
+      
+    </div>
+
+    <!-- Tabla OR -->
+    <div id="or-tabla" class="container screen">
+        <h2>📊 Tabla de Verdad - OR</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>A</th>
+                    <th>B</th>
+                    <th>Y</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>0</td><td>0</td><td>0</td></tr>
+                <tr><td>0</td><td>1</td><td>1</td></tr>
+                <tr><td>1</td><td>0</td><td>1</td></tr>
+                <tr><td>1</td><td>1</td><td>1</td></tr>
+            </tbody>
+        </table>
+        <button class="back-btn" onclick="showScreen('or')">← Volver</button>
+    </div>
+
+    <!-- NOT -->
+    <div id="not" class="container screen">
+        <h2>¬ Compuerta NOT</h2>
+        <div class="info-box">
+            <p><strong> ☃️¿Qué es la compuerta NOT?☃️</strong></p>
+            <p>La compuerta NOT invierte el valor de entrada. Si la entrada es 1, la salida es 0, y viceversa.</p>
+            <div class="formula">Y = Ā</div>
+            <p>💡 Es un inversor, esto quiere decir que hace lo opuesto a la entrada.</p>
+        </div>
+        <button class="btn" onclick="showScreen('not-tabla')">Ver Tabla de Verdad →</button>
+        <button class="back-btn" onclick="showScreen('basicas')">← Volver</button>
+    </div>
+
+    <!-- Tabla NOT -->
+    <div id="not-tabla" class="container screen">
+        <h2>📊 Tabla de Verdad - NOT</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>A</th>
+                    <th>Y</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>0</td><td>1</td></tr>
+                <tr><td>1</td><td>0</td></tr>
+            </tbody>
+        </table>
+        <button class="back-btn" onclick="showScreen('not')">← Volver</button>
+    </div>
+
+    <!-- Compuertas Compuestas -->
+    <div id="compuestas" class="container screen">
+        <h2>🪼 Compuertas Compuestas🪼</h2>
+        <div class="subtopics-grid">
+            <div class="topic-card" onclick="showScreen('nand')">
+                <img src="NAND.PNG" alt="NAND" style="width: 170px; height: 170px; margin-bottom: 10px;">
+                <h3>NAND</h3>
+            </div>
+            <div class="topic-card" onclick="showScreen('nor')">
+                <img src="NOR.PNG" alt="NOR" style="width: 170px; height: 170px; margin-bottom: 10px;">
+                <h3>NOR</h3>
+            </div>
+            <div class="topic-card" onclick="showScreen('xor')">
+                <img src="XOR.PNG" alt="XOR" style="width: 170px; height: 170px; margin-bottom: 10px;">
+                <h3>XOR</h3>
+            </div>
+            <div class="topic-card" onclick="showScreen('xnor')">
+                <img src="XNOR.PNG" alt="XNOR" style="width: 170px; height: 170px; margin-bottom: 10px;">
+                <h3>XNOR</h3>
+            </div>
+        </div>
+        <button class="back-btn" onclick="showScreen('menu'); changeBackground('pink')">← Volver</button>
+    </div>
+
+    <!-- NAND -->
+    <div id="nand" class="container screen">
+        <h2>Compuerta NAND</h2>
+        <div class="info-box">
+            <p><strong>🎯 ¿Qué es la compuerta NAND?</strong></p>
+            <p>NAND es la negación de AND. Produce 0 solo cuando todas sus entradas son 1.</p>
+            <div class="formula">Y = (A · B)'</div>
+            <p>💡 ¡Compuerta universal! Puedes crear cualquier circuito solo con NAND.</p>
+        </div>
+        <button class="btn" onclick="showScreen('nand-tabla')">Ver Tabla de Verdad →</button>
+        <button class="back-btn" onclick="showScreen('compuestas')">← Volver</button>
+    </div>
+
+    <!-- Tabla NAND -->
+    <div id="nand-tabla" class="container screen">
+        <h2>📊 Tabla de Verdad - NAND</h2>
+        <table>
+            <thead>
+                <tr><th>A</th><th>B</th><th>Y</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>0</td><td>0</td><td>1</td></tr>
+                <tr><td>0</td><td>1</td><td>1</td></tr>
+                <tr><td>1</td><td>0</td><td>1</td></tr>
+                <tr><td>1</td><td>1</td><td>0</td></tr>
+            </tbody>
+        </table>
+        <button class="back-btn" onclick="showScreen('nand')">← Volver</button>
+    </div>
+
+    <!-- NOR -->
+    <div id="nor" class="container screen">
+        <h2>Compuerta NOR</h2>
+        <div class="info-box">
+            <p><strong>🎯 ¿Qué es la compuerta NOR?</strong></p>
+            <p>NOR es la negación de OR. Produce 1 solo cuando todas sus entradas son 0.</p>
+            <div class="formula">Y = (A + B)'</div>
+            <p>💡 ¡También es universal! Construye cualquier circuito con NOR.</p>
+        </div>
+        <button class="btn" onclick="showScreen('nor-tabla')">Ver Tabla de Verdad →</button>
+        <button class="back-btn" onclick="showScreen('compuestas')">← Volver</button>
+    </div>
+
+    <!-- Tabla NOR -->
+    <div id="nor-tabla" class="container screen">
+        <h2>📊 Tabla de Verdad - NOR</h2>
+        <table>
+            <thead>
+                <tr><th>A</th><th>B</th><th>Y</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>0</td><td>0</td><td>1</td></tr>
+                <tr><td>0</td><td>1</td><td>0</td></tr>
+                <tr><td>1</td><td>0</td><td>0</td></tr>
+                <tr><td>1</td><td>1</td><td>0</td></tr>
+            </tbody>
+        </table>
+        <button class="back-btn" onclick="showScreen('nor')">← Volver</button>
+    </div>
+
+    <!-- XOR -->
+    <div id="xor" class="container screen">
+        <h2>Compuerta XOR</h2>
+        <div class="info-box">
+            <p><strong>🎯 ¿Qué es la compuerta XOR?</strong></p>
+            <p>XOR (OR exclusivo) produce 1 cuando las entradas son diferentes, 0 cuando son iguales.</p>
+            <div class="formula">Y = A ⊕ B</div>
+            <p>💡 Útil en sumadores y comparadores.</p>
+        </div>
+        <button class="btn" onclick="showScreen('xor-tabla')">Ver Tabla de Verdad →</button>
+        <button class="back-btn" onclick="showScreen('compuestas')">← Volver</button>
+    </div>
+
+    <!-- Tabla XOR -->
+    <div id="xor-tabla" class="container screen">
+        <h2>📊 Tabla de Verdad - XOR</h2>
+        <table>
+            <thead>
+                <tr><th>A</th><th>B</th><th>Y</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>0</td><td>0</td><td>0</td></tr>
+                <tr><td>0</td><td>1</td><td>1</td></tr>
+                <tr><td>1</td><td>0</td><td>1</td></tr>
+                <tr><td>1</td><td>1</td><td>0</td></tr>
+            </tbody>
+        </table>
+        <button class="back-btn" onclick="showScreen('xor')">← Volver</button>
+    </div>
+
+    <!-- XNOR -->
+    <div id="xnor" class="container screen">
+        <h2>Compuerta XNOR</h2>
+        <div class="info-box">
+            <p><strong>🎯 ¿Qué es la compuerta XNOR?</strong></p>
+            <p>XNOR es la negación de XOR. Produce 1 cuando las entradas son iguales, 0 cuando son diferentes.</p>
+            <div class="formula">Y = (A ⊕ B)'</div>
+            <p>💡 Compuerta de equivalencia - detecta igualdad.</p>
+        </div>
+        <button class="btn" onclick="showScreen('xnor-tabla')">Ver Tabla de Verdad →</button>
+        <button class="back-btn" onclick="showScreen('compuestas')">← Volver</button>
+    </div>
+
+    <!-- Tabla XNOR -->
+    <div id="xnor-tabla" class="container screen">
+        <h2>📊 Tabla de Verdad - XNOR</h2>
+        <table>
+            <thead>
+                <tr><th>A</th><th>B</th><th>Y</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>0</td><td>0</td><td>1</td></tr>
+                <tr><td>0</td><td>1</td><td>0</td></tr>
+                <tr><td>1</td><td>0</td><td>0</td></tr>
+                <tr><td>1</td><td>1</td><td>1</td></tr>
+            </tbody>
+        </table>
+        <button class="back-btn" onclick="showScreen('xnor')">← Volver</button>
+    </div>
+
+    <!-- Codificadores/Decodificadores -->
+    <div id="codificadores" class="container screen">
+        <h2>🔢 Codificadores/Decodificadores</h2>
+        <div class="subtopics-grid">
+            <div class="topic-card" onclick="showScreen('codificador')">
+                <img src="CODIFICADOR.jpg" alt="Codificador" style="width: 100px; height: 80px; margin-bottom: 10px;">
+                <h3>Codificador</h3>
+            </div>
+            <div class="topic-card" onclick="showScreen('decodificador')">
+                <img src="DECODIFICADOR.jpg" alt="Decodificador" style="width: 100px; height: 80px; margin-bottom: 10px;">
+                <h3>Decodificador</h3>
+            </div>
+        </div>
+        <button class="back-btn" onclick="showScreen('menu'); changeBackground('pink')">← Volver</button>
+    </div>
+
+    <!-- Codificador -->
+    <div id="codificador" class="container screen">
+        <h2>Codificador</h2>
+        <div class="info-box">
+            <p><strong>🎯 ¿Qué es un Codificador?</strong></p>
+            <p>Un codificador convierte líneas de entrada activas en un código binario en su salida. Tiene múltiples entradas pero solo una debe estar activa (en 1) a la vez.</p>
+            <p><strong>Características:</strong></p>
+            <p>• Entrada: 2ⁿ líneas (2, 4, 8, 16...)<br>• Salida: n líneas en código binario<br>• Solo una entrada activa a la vez</p>
+            <div class="formula">Para 4 entradas → 2 salidas</div>
+            <p>💡 <strong>Ejemplo:</strong> Si presionas el botón 5 en un teclado, el codificador convierte eso a código binario (0101).</p>
+        </div>
+        <button class="back-btn" onclick="showScreen('codificadores')">← Volver</button>
+    </div>
+
+    <!-- Decodificador -->
+    <div id="decodificador" class="container screen">
+        <h2>Decodificador</h2>
+        <div class="info-box">
+            <p><strong>🎯 ¿Qué es un Decodificador?</strong></p>
+            <p>Un decodificador convierte un código binario en líneas de salida individuales. Es lo opuesto a un codificador.</p>
+            <p><strong>Características:</strong></p>
+            <p>• Entrada: n líneas en código binario<br>• Salida: 2ⁿ líneas<br>• Solo una salida activa a la vez</p>
+            <div class="formula">Para 2 entradas → 4 salidas</div>
+            <p>💡 <strong>Ejemplo:</strong> Recibe el código binario (1010) y activa solo la línea 10 en la salida.</p>
+        </div>
+        <button class="back-btn" onclick="showScreen('codificadores')">← Volver</button>
+    </div>
+
+   <!-- Multiplexores/Demultiplexores -->
+    <div id="multiplexores" class="container screen">
+        <h2>🔄 Multiplexores/Demultiplexores</h2>
+        <div class="subtopics-grid">
+            <div class="topic-card" onclick="showScreen('multiplexor')">
+                <img src="MULTIPLEXOR.jpg" alt="Multiplexor" style="width: 100px; height: 80px; margin-bottom: 10px;">
+                <h3>Multiplexor</h3>
+            </div>
+            <div class="topic-card" onclick="showScreen('demultiplexor')">
+                <img src="DEMULTIPLEXOR.jpg" alt="Demultiplexor" style="width: 100px; height: 80px; margin-bottom: 10px;">
+                <h3>Demultiplexor</h3>
+            </div>
+        </div>
+        <button class="back-btn" onclick="showScreen('menu'); changeBackground('pink')">← Volver</button>
+    </div>
+
+    <!-- Multiplexor -->
+    <div id="multiplexor" class="container screen">
+        <h2>Multiplexor (MUX)</h2>
+        <div class="info-box">
+            <p><strong>🎯 ¿Qué es un Multiplexor?</strong></p>
+            <p>Un multiplexor selecciona una de varias entradas de datos y la envía a una única salida. Usa líneas de selección para elegir qué entrada pasar.</p>
+            <p><strong>Características:</strong></p>
+            <p>• Múltiples entradas de datos<br>• Líneas de selección (control)<br>• Una salida única</p>
+            <div class="formula">MUX 4:1 → 4 entradas, 2 líneas de selección</div>
+            <p>💡 <strong>Ejemplo:</strong> Como un selector de canales en TV. Tienes 4 canales (entradas) pero ves solo 1 en la pantalla (salida).</p>
+        </div>
+        <button class="back-btn" onclick="showScreen('multiplexores')">← Volver</button>
+    </div>
+
+    <!-- Demultiplexor -->
+    <div id="demultiplexor" class="container screen">
+        <h2>Demultiplexor (DEMUX)</h2>
+        <div class="info-box">
+            <p><strong>🎯 ¿Qué es un Demultiplexor?</strong></p>
+            <p>Un demultiplexor toma una entrada de datos y la direcciona a una de varias salidas posibles, usando líneas de selección.</p>
+            <p><strong>Características:</strong></p>
+            <p>• Una entrada de datos<br>• Líneas de selección (control)<br>• Múltiples salidas</p>
+            <div class="formula">DEMUX 1:4 → 1 entrada, 4 salidas</div>
+            <p>💡 <strong>Ejemplo:</strong> Una señal de audio que se distribuye a varios altavoces. Solo uno recibe la señal a la vez según el selector.</p>
+        </div>
+        <button class="back-btn" onclick="showScreen('multiplexores')">← Volver</button>
+    </div>
+
+    <!-- Comparadores -->
+    <div id="comparadores" class="container screen">
+        <h2>⚖️ Comparadores</h2>
+        <div class="info-box">
+            <p><strong>🎯 ¿Qué es un Comparador?</strong></p>
+            <p>Un comparador compara dos números binarios y produce salidas que indican si son iguales, o cuál es mayor.</p>
+            <p><strong>Salidas típicas:</strong></p>
+            <p>• A > B (A es mayor que B)<br>• A = B (A es igual a B)<br>• A < B (A es menor que B)</p>
+            <div class="formula">Compara dos números de n bits</div>
+            <p>💡 <strong>Ejemplo:</strong> Comparar 0101 (5) con 0011 (3). Resultado: A > B activo.</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>A</th>
+                    <th>B</th>
+                    <th>A>B</th>
+                    <th>A=B</th>
+                    <th>A<B</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+                <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+                <tr><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+                <tr><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+            </tbody>
+        </table>
+        <button class="back-btn" onclick="showScreen('menu'); changeBackground('pink')">← Volver</button>
+    </div>
+
+    <!-- Sumadores -->
+    <div id="sumadores" class="container screen">
+        <h2>➕ Sumadores</h2>
+        <div class="subtopics-grid">
+            <div class="topic-card" onclick="showScreen('medio-sumador')">
+                <div class="gate-symbol">½</div>
+                <h3>Medio Sumador</h3>
+            </div>
+            <div class="topic-card" onclick="showScreen('sumador-completo')">
+                <div class="gate-symbol">1</div>
+                <h3>Sumador Completo</h3>
+            </div>
+             <div class="topic-card" onclick="showScreen('sumador-paralelo')">
+                <div class="gate-symbol">1=1</div>
+                <h3>Sumador Paralelo</h3>
+            </div>
+        </div>
+        <button class="back-btn" onclick="showScreen('menu'); changeBackground('pink')">← Volver</button>
+    </div>
+
+    <!-- Medio Sumador -->
+    <div id="medio-sumador" class="container screen">
+        <h2>½ Medio Sumador</h2>
+        <div class="info-box">
+            <p><strong>🎯 ¿Qué es un Medio Sumador?</strong></p>
+            <p>Un medio sumador suma dos bits y produce una suma (S) y un acarreo (Cout). No cuenta el acarreo de entrada.</p>
+            <p><strong>Salidas:</strong></p>
+            <p>• S (Suma) = A XOR B<br>• Cout (Acarreo) = A AND B</p>
+            <div class="formula">S = A ⊕ B<br>Cout = A · B</div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>A</th>
+                    <th>B</th>
+                    <th>S</th>
+                    <th>Cout</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                <tr><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+                <tr><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+                <tr><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+            </tbody>
+        </table>
+        <button class="back-btn" onclick="showScreen('sumadores')">← Volver</button>
+    </div>
+
+    <!-- Sumador Completo -->
+    <div id="sumador-completo" class="container screen">
+        <h2>1️⃣ Sumador Completo</h2>
+        <div class="info-box">
+            <p><strong>🎯 ¿Qué es un Sumador Completo?</strong></p>
+            <p>Un sumador completo suma dos bits más un acarreo de entrada. Produce suma (S) y acarreo de salida (Cout).</p>
+            <p><strong>Salidas:</strong></p>
+            <p>• S = A XOR B XOR Cin<br>• Cout = (A AND B) OR (Cin AND (A XOR B))</p>
+            <div class="formula">Suma 3 entradas (A, B, Cin)</div>
+            <p>💡 Se usa para sumar números de múltiples bits encadenando varios sumadores.</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>A</th>
+                    <th>B</th>
+                    <th>Cin</th>
+                    <th>S</th>
+                    <th>Cout</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                <tr><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+                <tr><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+                <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+                <tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+                <tr><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+                <tr><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+                <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+            </tbody>
+        </table>
+        <button class="back-btn" onclick="showScreen('sumadores')">← Volver</button>
+
+        </div>
+
+<!-- Sumador Paralelo -->
+    <div id="sumador-paralelo" class="container screen">
+        <h2>🔗 Sumador Paralelo</h2>
+        <div class="info-box">
+            <p><strong>🎯 ¿Qué es un Sumador Paralelo?</strong></p>
+            <p>Un sumador paralelo es un circuito que suma dos números binarios de múltiples bits simultáneamente, usando varios sumadores completos conectados en cascada.</p>
+            <p><strong>Características:</strong></p>
+            <p>• Suma números de n bits<br>• Usa múltiples sumadores completos<br>• El acarreo se propaga de derecha a izquierda<br>• Más rápido que el sumador serie</p>
+            <div class="formula">Para sumar: A[n:0] + B[n:0] = S[n:0] + Cout</div>
+            <p>💡 Ejemplo: Sumar 1010 (10) + 0101 (5) = 1111 (15)</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Entrada A</th>
+                    <th>Entrada B</th>
+                    <th>Resultado</th>
+                    <th>Acarreo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>0000</td><td>0000</td><td>0000</td><td>0</td></tr>
+                <tr><td>0101</td><td>0011</td><td>1000</td><td>0</td></tr>
+                <tr><td>1010</td><td>0101</td><td>1111</td><td>0</td></tr>
+                <tr><td>1111</td><td>0001</td><td>0000</td><td>1</td></tr>
+                <tr><td>1111</td><td>1111</td><td>1110</td><td>1</td></tr>
+            </tbody>
+        </table>
+        <button class="back-btn" onclick="showScreen('sumadores')">← Volver</button>
+    </div>
+
+
+   
+
+   <!-- Display de 7 Segmentos -->
+    <div id="display" class="container screen">
+        <h2>🔢 Display de 7 Segmentos</h2>
+        <div class="info-box">
+            <p><strong>🎯 ¿Qué es un Display de 7 Segmentos?</strong></p>
+            <p>Un display de 7 segmentos es un componente que muestra dígitos del 0 al 9 usando 7 LEDs organizados en forma de figura de 8.</p>
+            
+            <div style="display: flex; gap: 30px; align-items: flex-start; margin: 20px 0;">
+                <div style="flex: 1;">
+                    <p><strong>Características:</strong></p>
+                    <p>• 7 segmentos LED (a, b, c, d, e, f, g)<br>• 1 punto decimal opcional<br>• Puede ser ánodo o cátodo común<br>• Se controla con un decodificador BCD</p>
+                    <div class="formula">
+                        Segmentos: a b c d e f g<br>
+                        Entrada: Código BCD (0000 a 1001)
+                    </div>
+                    <p>💡 <strong>Ejemplo:</strong> Para mostrar el número 5:<br>Segmentos activos: a, f, g, d, c (se forma el número 5)</p>
+                </div>
+                
+                <div style="flex: 0 0 200px; text-align: center;">
+                    <img src="DISPLAY.jpg" alt="Display de 7 Segmentos" style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);">
+                </div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <p><strong>📊 Tabla de Decodificación (Cátodo Común)</strong></p>
+            <table style="font-size: 0.95em;">
+                <thead>
+                    <tr>
+                        <th>Dígito</th>
+                        <th>a</th>
+                        <th>b</th>
+                        <th>c</th>
+                        <th>d</th>
+                        <th>e</th>
+                        <th>f</th>
+                        <th>g</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td></tr>
+                    <tr><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                    <tr><td>2</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+                    <tr><td>3</td><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+                    <tr><td>4</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td></tr>
+                    <tr><td>5</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td></tr>
+                    <tr><td>6</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+                    <tr><td>7</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                    <tr><td>8</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+                    <tr><td>9</td><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <button class="back-btn" onclick="showScreen('menu'); changeBackground('pink')">← Volver</button>
+    </div>
+
+    <script>
+        function showScreen(screenId) {
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => screen.classList.remove('active'));
+            const screen = document.getElementById(screenId);
+            if (screen) {
+                screen.classList.add('active');
+            }
+        }
+
+        function changeBackground(bgClass) {
+            const body = document.body;
+            body.className = 'bg-' + bgClass;
+        }
+    </script>
+</body>
+</html>
